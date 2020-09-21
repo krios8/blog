@@ -1,0 +1,33 @@
+.main-post {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.post-author {
+    margin-left: 25px;
+}
+
+.post-head {
+    margin: 0;
+    width: 100%;
+}
+
+.post-categories {
+    font-weight: 600;
+}
+
+.post-text {
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.post-img {
+    max-width: 35%;
+}
+
+.main-post {
+    width: 40%;
+    margin: 0 auto;
+}
