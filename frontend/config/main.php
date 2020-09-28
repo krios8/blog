@@ -61,6 +61,7 @@ return [
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 'cpost' => 'site/cpost',
                 'vpost' => 'site/vpost',
+                'profile' => 'site/profile',
             ],
         ],
 

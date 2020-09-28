@@ -1,6 +1,6 @@
 <?php
 
-//$this->title = $post->name;
+$this->title = $post->name;
 
 ?>
 

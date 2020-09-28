@@ -26,5 +26,24 @@ $ctall = ArrayHelper::map($ctlist, 'id', 'name');
 <div class="form-group">
     <?= Html::submitButton('Запостить', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
 </div>
+<?php if (Yii::$app->controller->action->id == 'upost'): ?>
+    <div class="form-group">
+        <?= Html::button('Удалить', ['class' => 'btn btn-primary delete', 'name' => 'login-button', 'style' => 'background: #bf0000;border: none;']) ?>
+    </div>
+<?php endif; ?>
 
 <?php ActiveForm::end(); ?>
+
+<script>
+    $('.delete').on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: document.location,
+            data: {del: 1},
+            success: function(res){
+                document.location.href="/";
+            }
+        });
+    });
+
+</script>

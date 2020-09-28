@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\User;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -57,6 +58,15 @@ class SiteController extends Controller
         ];
     }
 
+    public function beforeAction($action)
+    {
+        if ($action->id == 'upost') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -86,7 +96,8 @@ class SiteController extends Controller
 
 
             return $this->render('index', [
-                'post' => $post
+                'post' => $post,
+                'posts' => $posts
             ]);
 
 
@@ -320,6 +331,10 @@ class SiteController extends Controller
         $imgu = $imgmodel->find()->where(['id' => $post->img_id])->one();
         $ct = new Categoria();
 
+        if (isset($_POST['del']) && $_POST['del'] == 1) {
+            $post->delete();
+        }
+
         if ($post->load(Yii::$app->request->post()) && $img->load(Yii::$app->request->post())) {
             $img->imageFile = UploadedFile::getInstance($img, 'imageFile');
 
@@ -338,6 +353,51 @@ class SiteController extends Controller
         ]);
 
     }
+
+    public function actionProfile()
+    {
+        $model = new LoginForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if (isset($model->username)) {
+//                Yii::$app->user->identity->username = $model->username;
+                echo $model->username;
+                $user = new User();
+                $thUser = $user->find()->where(['id' => Yii::$app->user->identity->id])->one();
+                $thUser->username = $model->username;
+                $thUser->update();
+
+                die();
+            }
+        }
+
+
+
+        return $this->render('profile', [
+            'model' => $model,
+        ]);
+    }
+     public function actionSearch()
+     {
+         $posts = new Posts();
+         $postm = new Posts();
+         $res = '';
+
+         if ($postm->load(Yii::$app->request->post())) {
+             $sp = $posts->find()->andFilterWhere(['like', 'name', $postm->name])->all();
+             foreach ($sp as $one) {
+                 $res .= $one->id . '-' . $one->name . '/';
+             }
+
+             echo $res;
+             die();
+         }
+
+         return $this->render('profile', [
+             'model' => $model,
+         ]);
+
+     }
 
 }
 
